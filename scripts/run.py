@@ -20,8 +20,9 @@ def main():
     artists = read_artists_csv()
 
     # Get all new tracks from artists in CSV file
-    tracklist = get_new_tracks_from_artists(sp, artists["artist_uri"])
-
+    days = 30
+    tracklist = get_new_tracks_from_artists(sp, artists["artist_uri"], days=days)
+    print("Log: Tracks from selected artists in the last " + str(days) + " days:")
     print(tracklist)
     
 
