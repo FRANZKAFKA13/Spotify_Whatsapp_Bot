@@ -13,7 +13,11 @@ def print_user_playlists(sp, user_uri):
         sp (Object): Spotipy object that can be used to make API calls
         user_uri (string): A spotify user's URI
     """
-    playlists = sp.user_playlists(user_uri)
+
+    print("Log: Pulling data from Spotify. This can take a while...")
+    
+    playlists = sp.user_playlists(user_uri) 
+
     while playlists:
         for i, playlist in enumerate(playlists['items']):
             print("%4d %s %s" % (i + 1 + playlists['offset'], playlist['uri'],  playlist['name']))
@@ -36,6 +40,8 @@ def get_albums_from_artists(sp, artist_uri_list):
 
     # Create header for output df
     albums_list = [["name", "album_uri", "album_release_date", "artist_uri"]]
+
+    print("Log: Pulling data from Spotify. This can take a while...")
 
     # Loop through list of artist uris
     for artist_uri in artist_uri_list:
@@ -69,6 +75,8 @@ def get_tracks_from_albums(sp, album_uri_list):
 
     track_list = [["track_name", "track_uri", "track_release_date"]]
 
+    print("Log: Pulling data from Spotify. This can take a while...")
+
     for album_uri in album_uri_list:
         album_tracks = sp.album_tracks(album_uri, limit=50, offset=0)["items"]
         count_tracks_in_album = len(album_tracks)
@@ -100,6 +108,8 @@ def get_all_tracks_from_artists(sp, artist_uri_list):
 
     track_list = [["track_name", "track_uri", "track_release_date", "artist_name"]]
     track_df = pd.DataFrame(columns=track_list[0])
+
+    print("Log: Pulling data from Spotify. This can take a while...")
 
     for artist_uri in artist_uri_list:
         # Get artist name and albums

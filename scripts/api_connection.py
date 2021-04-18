@@ -13,6 +13,8 @@ def connect_to_api():
     sp = spotipy.Spotify(auth_manager=auth_manager)
     spotipy.Spotify()
 
+    print("Log: Connection to Spotify API established.")
+
     return sp
 
 

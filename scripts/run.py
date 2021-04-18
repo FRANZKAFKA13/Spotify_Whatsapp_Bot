@@ -11,6 +11,8 @@ import json
 
 def main():
 
+    print("Log: Started main function.")
+
     # Establish connection to Spotify API through Spotipy
     sp = connect_to_api()
 
