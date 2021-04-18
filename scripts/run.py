@@ -17,8 +17,8 @@ def main():
     # Read artists CSV
     artists = read_artists_csv()
 
-    # Get all tracks from artists in CSV file
-    tracklist = get_all_tracks_from_artists(sp, artists["artist_uri"])
+    # Get all new tracks from artists in CSV file
+    tracklist = get_new_tracks_from_artists(sp, artists["artist_uri"])
 
     print(tracklist)
     

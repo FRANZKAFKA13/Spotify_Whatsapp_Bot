@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import datetime
 
 def test_function():
     print("Test function executed.")
@@ -113,3 +114,53 @@ def get_all_tracks_from_artists(sp, artist_uri_list):
         track_df = track_df.append(tracks_artist_df)
     
     return track_df
+
+
+def get_new_tracks_from_artists(sp, artist_uri_list, days=7):
+    """A function returning newly released tracks from a list of artist URIs as pandas DataFrame.
+
+    Args:
+        sp (Object): Spotipy object that can be used to make API calls
+        artist_uri_list (list): A list containing artist URIs.
+        days (int): The number of days to look back for new releases
+
+    Returns:
+        DataFrame: A pandas DataFrame containing track names, URIs, release dates and artist names.
+    """
+    # Run function to get all songs
+    track_df = get_all_tracks_from_artists(sp, artist_uri_list)
+
+    # Only consider songs that have been released in the last days
+    track_df["days_since_release"] = track_df["track_release_date"].apply(str_to_date).apply(datediff_today)
+    track_df = track_df[track_df["days_since_release"] <= days]
+
+    return track_df
+
+
+def str_to_date(date_as_str):
+    """Transforms string with the format "YYYY-MM-DD" into a datetime object.
+
+    Args:
+        date_as_str (string): The string containing the date information.
+
+    Returns:
+        date_time_obj [datetime]: The given date as datetime object.
+    """
+    date_time_obj = datetime.datetime.strptime(date_as_str, '%Y-%m-%d').date()
+    return date_time_obj
+
+
+def datediff_today(date):
+    """Calculate difference between a datetime date and the current date.
+
+    Args:
+        date (datetime): A date which should be used for calculation.
+
+    Returns:
+        datediff: The difference between the given date and today in days.
+    """
+    today = datetime.date.today()
+    datediff = (today - date).days
+    return datediff
+
+
