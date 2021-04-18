@@ -15,6 +15,7 @@
 ## Deployment Chatbot
 
 - WIP
+- Will probably be built with [Rasa](https://rasa.com/) or [MS Bot Framework](https://dev.botframework.com/)
 
 ## Built With
 
