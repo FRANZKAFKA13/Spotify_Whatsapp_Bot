@@ -1,3 +1,6 @@
+import pandas as pd
+import numpy as np
+
 def test_function():
     print("Test function executed.")
 
@@ -100,10 +103,10 @@ def get_all_tracks_from_artists(sp, artist_uri_list):
     for artist_uri in artist_uri_list:
         # Get artist name and albums
         artist_name = sp.artist(artist_uri)["name"]
-        albums = get_albums_from_artists([artist_uri])
+        albums = get_albums_from_artists(sp, [artist_uri])
 
         # Get tracks from artist albums
-        tracks_artist_df = get_tracks_from_albums(albums["album_uri"].to_list())
+        tracks_artist_df = get_tracks_from_albums(sp, albums["album_uri"].to_list())
         tracks_artist_df["artist_name"] = artist_name
 
         # Append new songs to dataframe
