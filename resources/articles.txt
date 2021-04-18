@@ -1,2 +1,5 @@
 Getting Started with Spotify's API and Spotipy
 https://medium.com/@maxtingle/getting-started-with-spotifys-api-spotipy-197c3dc6353b
+
+Spotipy Documentation
+https://spotipy.readthedocs.io/en/2.16.1/#installation
