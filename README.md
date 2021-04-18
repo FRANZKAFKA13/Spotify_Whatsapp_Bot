@@ -1,20 +1,29 @@
-# Spotify_Whatsapp_Bot
+# Spotify Whatsapp Bot
 
-
-## How to run script
+## Deployment Spotify API Script
 
 - Clone repository
-- Install requirements
-- Run "run.py" from "/scripts" folder from console (e.g. "python run.py")
-
-## How to rebuild?
-
 - Create [virtual environment](https://docs.python.org/3/library/venv.html)
 - Create application on the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/)
-- Install [Spotipy](https://spotipy.readthedocs.io/en/2.18.0/#installation) with pip
+- Install requirements.txt with pip
 - For authentication with your Spotify application, follow the [Client Credentials Flow](https://spotipy.readthedocs.io/en/2.18.0/#client-credentials-flow)
-    - Set up environment variables in your venv/bin/activate
-    - Use provided code snipped to test your connection (you can use a python file or Jupyter Notebook)
-    - If you use Jupyter Notebook, make sure it runs on the virtual environment you set up earlier
+    - Set up environment variables in your virtual environment (see [code snippet](https://github.com/FRANZKAFKA13/Spotify_Whatsapp_Bot/blob/main/resources/activate))
+- If you use Jupyter Notebook, make sure it runs on the virtual environment you set up 
+- Run "run.py" from "/scripts" folder from console (e.g. "python run.py")
+
+
+## Deployment Chatbot
+
+- WIP
+
+## Built With
+
+- [Spotipy](https://spotipy.readthedocs.io/en/2.18.0/#installation) - Used for connecting to the Spotify API
+- [pandas](https://pandas.pydata.org/) - Used for data transformations
+
+
+## Authors
+
+- [**Carsten Granig**](https://www.linkedin.com/in/carsten-granig/)
 
 
