@@ -3,3 +3,9 @@ https://medium.com/@maxtingle/getting-started-with-spotifys-api-spotipy-197c3dc6
 
 Spotipy Documentation
 https://spotipy.readthedocs.io/en/2.16.1/#installation
+
+Rasa CLI Documentation
+https://rasa.com/docs/rasa/command-line-interface
+
+Rasa Custom Actions
+https://rasa.com/docs/rasa/custom-actions
