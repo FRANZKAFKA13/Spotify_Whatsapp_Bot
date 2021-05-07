@@ -113,8 +113,8 @@ pyzmq==22.0.3
 qtconsole==5.0.3
 QtPy==1.9.0
 questionary==1.9.0
-rasa==2.5.0
-rasa-sdk==2.5.0
+rasa==2.6.0
+rasa-sdk==2.6.0
 redis==3.5.3
 regex==2020.9.27
 requests==2.25.1
@@ -171,4 +171,4 @@ websockets==8.1
 Werkzeug==1.0.1
 widgetsnbextension==3.5.1
 wrapt==1.12.1
-yarl==1.6.3
+yarl==1.5.1
