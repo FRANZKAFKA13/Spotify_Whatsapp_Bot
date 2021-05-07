@@ -37,3 +37,10 @@ stories:
   - action: utter_goodbye
   - intent: nlu_fallback
   - action: utter_happy
+
+- story: custom_action_path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: custom_action
+  - action: custom_action_test

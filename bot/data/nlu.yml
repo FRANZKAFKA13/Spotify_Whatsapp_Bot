@@ -36,6 +36,8 @@ nlu:
     - of course
     - that sounds good
     - correct
+    - yup
+    - yeah
 - intent: deny
   examples: |
     - no
@@ -86,3 +88,12 @@ nlu:
 - intent: nlu_fallback
   examples: |
     - exit
+- intent: ask_subscription
+  examples: |
+    - am I subscribed to [Haiyti](artist_name)
+- lookup: artist_name
+      data/artist_names.txt
+- intent: custom_action
+  examples: |
+    - please trigger the custom action
+    - custom action

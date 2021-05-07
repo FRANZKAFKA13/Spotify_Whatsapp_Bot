@@ -2,6 +2,7 @@ version: '2.0'
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
+  
 intents:
 - goodbye
 - greet
@@ -11,6 +12,9 @@ intents:
 - mood_great
 - mood_unhappy
 - bot_challenge
+- custom_action
+- ask_subscription
+
 responses:
   utter_greet:
   - text: Hey! How are you?
@@ -25,7 +29,12 @@ responses:
   - text: Bye
   utter_iamabot:
   - text: I am a bot, powered by Rasa.
+
 actions:
 - utter_goodbye
 - utter_greet
 - utter_happy
+- custom_action_test
+
+entities:
+- artist_name
