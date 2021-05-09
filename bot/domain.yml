@@ -13,8 +13,8 @@ intents:
 - mood_great
 - mood_unhappy
 - bot_challenge
-- custom_action
-- ask_subscription
+- request_new_tracks
+- subscribe_to_artist
 
 responses:
   utter_greet:
@@ -30,9 +30,25 @@ responses:
   - text: Bye
   utter_iamabot:
   - text: I am a bot, powered by Rasa.
+  utter_takesawhile:
+  - text: Please wait, this action takes a while as it needs to pull data from the Spotify API.
+  utter_ask_artist_subscription_form_new_artist_subscription_name:
+  - text: What is the name of the artist you want to subscribe to?
 
 actions:
-- custom_action_test
+- custom_action_get_new_tracks
+- custom_action_takes_a_while
 
-entities:
-- artist_name
+slots:
+  new_artist_subscription_name:
+    type: text
+  subscribed_artists:
+    type: list
+
+forms:
+  artist_subscription_form:
+    required_slots:
+        new_artist_subscription_name:
+        - type: from_text
+
+    

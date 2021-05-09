@@ -16,20 +16,18 @@ from actions.scripts.functions import *
 
 import numpy as np 
 import pandas as pd
+import sqlalchemy
 
 import json
 
-class CustomActionTest(Action):
+class GetNewTracks(Action):
 
     def name(self) -> Text:
-        return "custom_action_test"
+        return "custom_action_get_new_tracks"
 
     async def run(self, dispatcher: CollectingDispatcher,
                   tracker: Tracker,
                   domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        dispatcher.utter_message(text="Test response by bot.")
-        print("Log: Started main function.")
 
         # Establish connection to Spotify API through Spotipy
         sp = connect_to_api()
@@ -45,10 +43,5 @@ class CustomActionTest(Action):
         for track_name in tracklist['track_name']:
             dispatcher.utter_message(text=track_name)
 
-        dispatcher.utter_message(text="Reached end of custom function.")
-
         return []
-
-
-
 

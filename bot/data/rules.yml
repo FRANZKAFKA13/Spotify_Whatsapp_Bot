@@ -11,3 +11,31 @@ rules:
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+- rule: Say the action takes a while whenever user request new tracks
+  steps:
+  - intent: request_new_tracks
+  - action: utter_takesawhile
+  - action: custom_action_get_new_tracks
+
+
+- rule: Activate artists subscription form
+  steps:
+  - intent: subscribe_to_artist
+  - action: artist_subscription_form
+  - active_loop: artist_subscription_form
+
+# rules:
+# - rule: Submit form
+#   condition:
+#   # Condition that form is active.
+#   - active_loop: restaurant_form
+#   steps:
+#   # Form is deactivated
+#   - action: restaurant_form
+#   - active_loop: null
+#   - slot_was_set:
+#     - requested_slot: null
+#   # The actions we want to run when the form is submitted.
+#   - action: utter_submit
+#   - action: utter_slots_values

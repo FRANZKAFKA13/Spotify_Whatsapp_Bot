@@ -2,10 +2,6 @@ import pandas as pd
 import numpy as np
 import datetime
 
-def test_function():
-    print("Test function executed.")
-
-
 def print_user_playlists(sp, user_uri):
     """Prints out user playlist
 
@@ -58,6 +54,7 @@ def get_albums_from_artists(sp, artist_uri_list):
     # Create df from list of albums for all artist
     albums_df = pd.DataFrame(data=albums_list[1:], columns=albums_list[0])
 
+    print("Log: Finished pulling all albums from artist.")
     return albums_df
 
 
@@ -92,6 +89,7 @@ def get_tracks_from_albums(sp, album_uri_list):
     # Create df from list of tracks for all albums
     track_df = pd.DataFrame(data=track_list[1:], columns=track_list[0])
     
+    print("Log: Finished pulling all tracks from albums.")
     return track_df
 
 
@@ -123,6 +121,7 @@ def get_all_tracks_from_artists(sp, artist_uri_list):
         # Append new songs to dataframe
         track_df = track_df.append(tracks_artist_df)
     
+    print("Log: Finished pulling all tracks from artist.")
     return track_df
 
 
@@ -144,6 +143,7 @@ def get_new_tracks_from_artists(sp, artist_uri_list, days=7):
     track_df["days_since_release"] = track_df["track_release_date"].apply(str_to_date).apply(datediff_today)
     track_df = track_df[track_df["days_since_release"] <= days]
 
+    print("Log: Finished pulling new tracks from artist.")
     return track_df
 
 
