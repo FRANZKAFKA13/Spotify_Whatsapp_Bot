@@ -10,9 +10,10 @@ from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 
 
-from scripts.api_connection import *
-from scripts.data_import import *
-from scripts.api_connection import *
+from bot.actions.functions.api_connection import *
+from bot.actions.functions.data_import import *
+from bot.actions.functions.api_connection import *
+from bot.actions.functions.api_functions import *
 
 import numpy as np 
 import pandas as pd
