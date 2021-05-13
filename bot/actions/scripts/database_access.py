@@ -1,25 +1,8 @@
 import sqlite3
-import sqlalchemy
 from sqlalchemy import create_engine
 
 import numpy as np 
 import pandas as pd
-
-
-def get_subscribed_artist(user_name):
-    """A function returning artists user subscribed to from the database.
-    Args:
-        user_name (String): The user's name.
-    Returns:
-        artist_uri_list: A list of URIs of subscribed artists.
-    """
-
-    engine = create_engine('sqlite:///test.db')
-    df = pd.read_sql_table('subscribed_artists', engine)
-
-    print(df)
-
-    return ""
 
 
 def create_connection(db_file):
@@ -33,20 +16,23 @@ def create_connection(db_file):
     conn = None
     try:
         conn = sqlite3.connect(db_file)
-    except Error as e:
+    except Exception as e:
         print(e)
 
     return conn
 
 
 def create_initial_db(db_file):
-
+    """ Set up initial DB with default tables
+    Args:
+        db_file: database file
+    """
     conn = create_connection(db_file)
     cur = conn.cursor()
 
     sql_create_users_table =              """ CREATE TABLE "users" (
-                                              "user_uri" INTEGER NOT NULL UNIQUE,
-                                              "name"	 INTEGER,
+                                              "user_uri"    TEXT NOT NULL UNIQUE,
+                                              "user_name"	TEXT,
                                               PRIMARY KEY("user_uri")
                                               ); """
 
@@ -71,23 +57,19 @@ def create_initial_db(db_file):
     cur.close()
 
 
-def add_user(db_file, user_name):
+def add_user(db_file, user_uri, user_name):
+    """ Add user URI to database user table
+    Args:
+        db_file: Database file
+        user_name (string): The user's name
+    """
 
     conn = create_connection(db_file)
     cur = conn.cursor()
 
-    # Generate new user ID by iterating
-    sql_get_latest_user_uri = """ SELECT max(user_uri) FROM users"""
-    cur.execute(sql_get_latest_user_uri)
-    latest_id = cur.fetchall()[0][0]
-    if latest_id is None:
-        new_id = 1
-    else:
-        new_id = latest_id + 1
-
     # Add new user to user table
-    new_user = (new_id, user_name)
-    sql_add_new_user = """ INSERT INTO users(user_uri, name)
+    new_user = (user_uri, user_name)
+    sql_add_new_user = """ INSERT INTO users(user_uri, user_name)
                            VALUES(?,?) """
 
     try:
@@ -101,7 +83,12 @@ def add_user(db_file, user_name):
 
 
 def add_subscription(db_file, user_uri, artist_uri):
-
+    """ Add subscription (artist_uri) to user
+    Args:
+        db_file: Database file
+        user_uri (string): The user's URI
+        artist_uri (string): The artist's URI
+    """
     conn = create_connection(db_file)
     cur = conn.cursor()
 
@@ -120,6 +107,38 @@ def add_subscription(db_file, user_uri, artist_uri):
     cur.close()
 
 
-create_initial_db("../../data/test.db")
-add_user("../../data/test.db", "Even more user")
-add_subscription("../../data/test.db", 2, "test_uri")
+def get_subscribed_artists(db_file, user_uri):
+    """A function returning artists user subscribed to from the database.
+    Args:
+        user_uri (string): The user's URI.
+    Returns:
+        artist_uri_list (list): A list of URIs of subscribed artists.
+    """
+
+    conn = create_connection(db_file)
+    cur = conn.cursor()
+
+    sql_get_user_subscriptions =    """ SELECT artist_uri 
+                                    FROM subscribed_artists
+                                    WHERE user_uri = ? """
+    try:
+        artist_uri_query_result = cur.execute(sql_get_user_subscriptions, (user_uri,)).fetchall()
+    except Exception as e:
+        print("test")
+        print("Failed pulling user subscriptions: " + str(e))
+    
+    artist_uri_list = []
+    for artist_uri in artist_uri_query_result:
+        artist_uri_list.append(artist_uri[0])
+
+    conn.commit()
+    cur.close()
+
+    return artist_uri_list
+
+
+
+#create_initial_db("../../data/test.db")
+#add_user("../../data/test.db", "test_uri", "Even more user")
+add_subscription("../../data/test.db", "test_uri", "artist_4")
+print(get_subscribed_artists("../../data/test.db", "test_uri"))

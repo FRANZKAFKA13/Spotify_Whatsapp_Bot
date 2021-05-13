@@ -16,6 +16,9 @@
 
 - Will probably be built with [Rasa](https://rasa.com/) or [MS Bot Framework](https://dev.botframework.com/)
 
+# Requirements
+- DEFAULT_STREAM_READING_TIMEOUT_IN_SECONDS venv/lib/python3.8/site-packages/rasa/core/channels/console.py needs to be increased to 60 to avoid timeouts when data is being pulled
+
 ## Built With
 
 - [Spotipy](https://spotipy.readthedocs.io/en/2.18.0/#installation) - Used for connecting to the Spotify API
