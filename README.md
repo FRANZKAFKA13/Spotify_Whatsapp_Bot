@@ -24,6 +24,7 @@
 
 - [Spotipy](https://spotipy.readthedocs.io/en/2.18.0/#installation) - Used for connecting to the Spotify API
 - [pandas](https://pandas.pydata.org/) - Used for data transformations
+- [startship](https://starship.rs) - Customize shell
 
 
 ## Authors
