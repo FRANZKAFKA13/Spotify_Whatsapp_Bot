@@ -100,13 +100,11 @@ nlu:
 - lookup: artist_name
       data/artist_names.txt
 
-- intent: request_new_tracks
+- intent: add_new_user
   examples: |
-    - do my artist have new tracks?
-    - what are new tracks?
-    - new tracks of interest?
-    - any new tracks?
-    - any new songs?
+    - Please add me as a new user
+    - Register account
+    - I want to register
 
 - intent: subscribe_to_artist
   examples: |
@@ -114,3 +112,11 @@ nlu:
     - Add new artist to my list
     - I want to follow an artist
     - add artist to my subscription list
+
+- intent: request_new_tracks
+  examples: |
+    - do my artist have new tracks?
+    - what are new tracks?
+    - new tracks of interest?
+    - any new tracks?
+    - any new songs?

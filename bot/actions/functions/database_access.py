@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 
-def create_connection(db_file):
+def create_db_connection(db_file):
     """ Create a database connection to the SQLite database specified by db_file
     Args:
         db_file: database file
@@ -27,7 +27,7 @@ def create_initial_db(db_file):
     Args:
         db_file: database file
     """
-    conn = create_connection(db_file)
+    conn = create_db_connection(db_file)
     cur = conn.cursor()
 
     sql_create_users_table =              """ CREATE TABLE "users" (
@@ -64,7 +64,7 @@ def add_user(db_file, user_uri, user_name):
         user_name (string): The user's name
     """
 
-    conn = create_connection(db_file)
+    conn = create_db_connection(db_file)
     cur = conn.cursor()
 
     # Add new user to user table
@@ -89,7 +89,7 @@ def add_subscription(db_file, user_uri, artist_uri):
         user_uri (string): The user's URI
         artist_uri (string): The artist's URI
     """
-    conn = create_connection(db_file)
+    conn = create_db_connection(db_file)
     cur = conn.cursor()
 
     # Add new subscription to user table
@@ -115,7 +115,7 @@ def get_subscribed_artists(db_file, user_uri):
         artist_uri_list (list): A list of URIs of subscribed artists.
     """
 
-    conn = create_connection(db_file)
+    conn = create_db_connection(db_file)
     cur = conn.cursor()
 
     sql_get_user_subscriptions =    """ SELECT artist_uri 
@@ -140,5 +140,5 @@ def get_subscribed_artists(db_file, user_uri):
 
 #create_initial_db("../../data/test.db")
 #add_user("../../data/test.db", "test_uri", "Even more user")
-add_subscription("../../data/test.db", "test_uri", "artist_4")
-print(get_subscribed_artists("../../data/test.db", "test_uri"))
+# add_subscription("../../data/test.db", "test_uri", "artist_4")
+# print(get_subscribed_artists("../../data/test.db", "test_uri"))

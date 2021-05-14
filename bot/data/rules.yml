@@ -18,12 +18,19 @@ rules:
   - action: utter_takesawhile
   - action: custom_action_get_new_tracks
 
+- rule: Register new user if they want to register
+  steps:
+  - intent: add_new_user
+  - action: new_user_form
+  - action: custom_action_add_new_user
 
 - rule: Activate artists subscription form
   steps:
   - intent: subscribe_to_artist
   - action: artist_subscription_form
   - active_loop: artist_subscription_form
+
+
 
 # rules:
 # - rule: Submit form
