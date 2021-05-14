@@ -71,18 +71,17 @@ class AddNewUser(Action):
         user_name = ""
         
         # Add new user to db
-        db_path = "../data/test.db"
-        #add_user(db_path, user_uri, user_name)
+        db_path = "data/test.db"
+        user_uri = tracker.get_slot("user_uri")
+        user_name = tracker.get_slot("user_name")
 
-        print("\n\nBot log: Printing domain:")
-        print(domain)
-        print("\n\nBot log: Printing slot:")
-        print(SlotSet)
+        try:
+            add_user(db_path, user_uri, user_name)
+            dispatcher.utter_message(text="Registered new user: " + str(user_name) + ".")
+        except Exception as e:
+            print(e)
 
-        # Accessing bot's slot
-        print(tracker.get_slot("user_name"))
-        print(tracker.get_slot("user_uri"))
         
-        dispatcher.utter_message(text="Added " + str(user_name) + ".")
+        
 
         return []
