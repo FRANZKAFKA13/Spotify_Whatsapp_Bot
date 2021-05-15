@@ -86,3 +86,7 @@ forms:
           value: true
           intent: affirm
           not_intent: deny
+        - type: from_intent
+          value: false
+          intent: deny
+          not_intent: affirm
