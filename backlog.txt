@@ -1,0 +1,3 @@
+Notes of next features to be implemented:
+- Exception handling when no artist is found
+- Fix artist_confirm form when user does not confirm (https://forum.rasa.com/t/form-gets-stuck-on-yes-no-questions/31366)
