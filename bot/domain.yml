@@ -39,18 +39,31 @@ responses:
   - text: What is your Spotify URI?
   utter_ask_artist_subscription_form_new_artist_subscription_name:
   - text: What is the name of the artist you want to subscribe to?
+  utter_ask_confirm_artist_form_artist_correct:
+  - text: Is this the correct artist?
+  utter_canceled_action:
+  - text: Canceled the action.
 
 actions:
 - custom_action_add_new_user
 - custom_action_get_new_tracks
+- custom_action_search_artist
+- custom_action_subscribe_to_artist
 
 slots:
   user_uri:
     type: text
   user_name:
     type: text
+  found_artist_name:
+    type: text
+  found_artist_uri:
+    type: text
   new_artist_subscription_name:
     type: text
+  artist_correct:
+    type: bool
+    influence_conversation: true
   subscribed_artists:
     type: list
 
@@ -66,5 +79,10 @@ forms:
     required_slots:
         new_artist_subscription_name:
         - type: from_text
-
-    
+  confirm_artist_form:
+    required_slots:
+      artist_correct:
+        - type: from_intent
+          value: true
+          intent: affirm
+          not_intent: deny

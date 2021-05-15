@@ -31,6 +31,7 @@ import pandas as pd
 import sqlalchemy
 import json
 
+
 # Define custom action classes
 class GetNewTracks(Action):
 
@@ -67,10 +68,6 @@ class AddNewUser(Action):
                   tracker: Tracker,
                   domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        # Get user name
-        user_name = ""
-        
-        # Add new user to db
         db_path = "data/test.db"
         user_uri = tracker.get_slot("user_uri")
         user_name = tracker.get_slot("user_name")
@@ -81,7 +78,51 @@ class AddNewUser(Action):
         except Exception as e:
             print(e)
 
+        return []
+
+
+class SearchArtist(Action):
+
+    def name(self) -> Text:
+        return "custom_action_search_artist"
+
+    async def run(self, dispatcher: CollectingDispatcher,
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        db_path = "data/test.db"
+
+        # Retrieve artist name and URI from user input
+        sp = connect_to_api()
+        artist_input_name = tracker.get_slot("new_artist_subscription_name")
+        search_result_artist_name, search_result_artist_uri = search_artist_by_name(sp, artist_input_name)
+
+        dispatcher.utter_message(text="I found the following artist: " + str(search_result_artist_name) + " (" + str(search_result_artist_uri) + ")")
+
+        return[SlotSet("found_artist_name", search_result_artist_name), SlotSet('found_artist_uri', search_result_artist_uri)]
+
+class SubscribeToArtist(Action):
+
+    def name(self) -> Text:
+        return "custom_action_subscribe_to_artist"
+
+    async def run(self, dispatcher: CollectingDispatcher,
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        # Retrieve artist name and URI from user slots
+        search_result_artist_name = tracker.get_slot("found_artist_name")
+        search_result_artist_uri = tracker.get_slot("found_artist_uri")
+
         
-        
+        # Database call adding new subscription
+        db_path = "data/test.db"
+        user_uri = tracker.get_slot("user_uri")
+        try:
+            add_subscription(db_path, user_uri, search_result_artist_uri)
+            dispatcher.utter_message(text="Subscribed to new artist: " + str(search_result_artist_name))
+            dispatcher.utter_message(text="Artist URI: " + str(search_result_artist_uri))
+        except Exception as e:
+            print(e)
 
         return []

@@ -1,10 +1,28 @@
 import pandas as pd
 import numpy as np
 import datetime
+import pprint
+
+def search_artist_by_name(sp, artist_name_input):
+    """Get artist name and URI from artist name input
+    Args:
+        sp (Object): Spotipy object that can be used to make API calls
+        artist_name_input (string): A name from an artist
+    Returns:
+        search_result_artist_name: The top search result artist name for the given name
+        search_result_artist_uri: The top search result artist URI for the given name
+    """
+
+    results = sp.search(q=artist_name_input, type='artist', limit=20, offset=0, market="DE")
+
+    result_artist_name = results["artists"]["items"][0]["name"]
+    result_artist_uri = results["artists"]["items"][0]["uri"]
+
+    return result_artist_name, result_artist_uri
+
 
 def print_user_playlists(sp, user_uri):
     """Prints out user playlist
-
     Args:
         sp (Object): Spotipy object that can be used to make API calls
         user_uri (string): A spotify user's URI
@@ -21,6 +39,7 @@ def print_user_playlists(sp, user_uri):
             playlists = sp.next(playlists)
         else:
             playlists = None
+
 
 
 def get_albums_from_artists(sp, artist_uri_list):

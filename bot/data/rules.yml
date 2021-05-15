@@ -24,12 +24,25 @@ rules:
   - action: new_user_form
   - action: custom_action_add_new_user
 
-- rule: Activate artists subscription form
+- rule: Activate artists subscription form right artist
   steps:
   - intent: subscribe_to_artist
   - action: artist_subscription_form
-  - active_loop: artist_subscription_form
+  - action: custom_action_search_artist
+  - action: confirm_artist_form
+  - slot_was_set:
+    - artist_correct: true
+  - action: custom_action_subscribe_to_artist
 
+- rule: Activate artists subscription form wrong artist
+  steps:
+  - intent: subscribe_to_artist
+  - action: artist_subscription_form
+  - action: custom_action_search_artist
+  - action: confirm_artist_form
+  - slot_was_set:
+    - artist_correct: null
+  - action: utter_canceled_action
 
 
 # rules:
