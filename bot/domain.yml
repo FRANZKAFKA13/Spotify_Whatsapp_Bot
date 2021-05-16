@@ -43,6 +43,8 @@ responses:
   - text: Is this the correct artist?
   utter_canceled_action:
   - text: Canceled the action.
+  utter_already_registered:
+  - text: You are already registered as {user_name}!
 
 actions:
 - custom_action_add_new_user
@@ -56,6 +58,8 @@ slots:
     type: text
   user_name:
     type: text
+  user_registered:
+    type: bool
   found_artist_name:
     type: text
   found_artist_uri:

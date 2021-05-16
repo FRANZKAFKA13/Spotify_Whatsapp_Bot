@@ -2,6 +2,9 @@ version: "2.0"
 
 rules:
 
+
+## SMALL TALK ##
+
 - rule: Say goodbye anytime the user says goodbye
   steps:
   - intent: goodbye
@@ -18,11 +21,25 @@ rules:
   - action: utter_takesawhile
   - action: custom_action_get_new_tracks
 
+
+## REGISTRATION + AUTHENTICATION ##
+
 - rule: Register new user if they want to register
   steps:
   - intent: add_new_user
   - action: new_user_form
   - action: custom_action_add_new_user
+
+- rule: Tell user that they are already registered
+  condition:
+  - slot_was_set:
+    - user_registered: true
+  steps:
+  - intent: add_new_user
+  - action: utter_already_registered
+
+
+## ARTIST SUBSCRIPTION ##
 
 - rule: Activate artists subscription form right artist
   steps:
@@ -50,7 +67,6 @@ rules:
     - artist_correct: false
   - action: utter_canceled_action
   - action: custom_action_reset_artist_slots
-
 
 - rule: Activate artists subscription form no artist found
   steps:

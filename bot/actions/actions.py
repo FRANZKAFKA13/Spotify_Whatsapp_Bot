@@ -75,10 +75,12 @@ class AddNewUser(Action):
         try:
             add_user(db_path, user_uri, user_name)
             dispatcher.utter_message(text="Registered new user: " + str(user_name) + ".")
+            user_registered = True
         except Exception as e:
             print(e)
+            user_registered = False
 
-        return []
+        return [SlotSet("user_registered", user_registered)]
 
 
 class SearchArtist(Action):
