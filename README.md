@@ -35,7 +35,7 @@
     - The database is created through the function create_initial_db in [database_access.py](bot/actions/functions/database_access.py) where the schema is defined
 ## Built With
 
-- [Python])(https://www.python.org/) - Main programming language used
+- [Python](https://www.python.org/) - Main programming language used
 - [Spotipy](https://spotipy.readthedocs.io/en/2.18.0/#installation) - Used for connecting to the Spotify API
 - [Rasa](https://rasa.com/) - A simple and powerful framework for conversational agents
 - [pandas](https://pandas.pydata.org/) - Used for data transformations
