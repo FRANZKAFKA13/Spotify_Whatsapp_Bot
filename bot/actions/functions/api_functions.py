@@ -15,8 +15,12 @@ def search_artist_by_name(sp, artist_name_input):
 
     results = sp.search(q=artist_name_input, type='artist', limit=20, offset=0, market="DE")
 
-    result_artist_name = results["artists"]["items"][0]["name"]
-    result_artist_uri = results["artists"]["items"][0]["uri"]
+    try:
+        result_artist_name = results["artists"]["items"][0]["name"]
+        result_artist_uri = results["artists"]["items"][0]["uri"]
+    except Exception as e:
+        print("Log: No results were found.")
+        return
 
     return result_artist_name, result_artist_uri
 
