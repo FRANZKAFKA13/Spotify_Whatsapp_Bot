@@ -1,3 +1,9 @@
 Notes of next features to be implemented:
+- Allow user to specify how many days they want to look back when requesting new songs
+
+Ongoing:
+- Show new songs from subscribed artists
+
+Done:
 - Exception handling when no artist is found
 - Fix artist_confirm form when user does not confirm (https://forum.rasa.com/t/form-gets-stuck-on-yes-no-questions/31366)
