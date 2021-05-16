@@ -33,32 +33,6 @@ import json
 
 
 # Define custom action classes
-class GetNewTracks(Action):
-
-    def name(self) -> Text:
-        return "custom_action_get_new_tracks"
-
-    async def run(self, dispatcher: CollectingDispatcher,
-                  tracker: Tracker,
-                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        # Establish connection to Spotify API through Spotipy
-        sp = connect_to_api()
-
-        # Read artists CSV
-        artists = read_artists_csv()
-
-        # # Get all new tracks from artists in CSV file
-        days = 10
-        tracklist = get_new_tracks_from_artists(sp, artists["artist_uri"], days=days)
-        dispatcher.utter_message(text="Tracks from selected artists in the last " + str(days) + " days:")
-
-        for track_name in tracklist['track_name']:
-            dispatcher.utter_message(text=track_name)
-
-        return []
-
-
 class AddNewUser(Action):
 
     def name(self) -> Text:
@@ -147,3 +121,34 @@ class ResetArtistSlots(Action):
 
         return[SlotSet("found_artist_name", None), SlotSet("found_artist_uri", None), SlotSet("new_artist_subscription_name", None), SlotSet("artist_correct", None)]
 
+
+class GetNewSubscribedSongs(Action):
+    
+    def name(self) -> Text:
+        return "custom_action_get_new_subscribed_songs"
+
+    async def run(self, dispatcher: CollectingDispatcher,
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        user_uri = tracker.get_slot("user_uri")
+
+        db_path = "data/test.db"
+        artist_uri_list = get_subscribed_artists(db_path, user_uri)
+        
+        sp = connect_to_api()
+        days = 10
+        tracklist = get_new_tracks_from_artists(sp, artist_uri_list, days=days)
+
+        dispatcher.utter_message(text="Tracks from selected artists in the last " + str(days) + " days:")
+        
+        new_songs_output = ""
+        for artist in tracklist["artist_name"].unique():
+            new_songs_output += ("-----" + str(artist) + "-----\n")
+            for track in tracklist["track_name"][tracklist["artist_name"] == artist]:
+                new_songs_output += (str(track) + "\n")
+            new_songs_output += "\n\n"
+        
+        dispatcher.utter_message(text=new_songs_output)
+
+        return []

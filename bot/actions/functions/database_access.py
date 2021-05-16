@@ -127,9 +127,15 @@ def get_subscribed_artists(db_file, user_uri):
         print("test")
         print("Failed pulling user subscriptions: " + str(e))
     
+    print("DEBUG: ARTIST URI QUERY RESULT:")
+    print(artist_uri_query_result)
+
     artist_uri_list = []
     for artist_uri in artist_uri_query_result:
         artist_uri_list.append(artist_uri[0])
+
+    print("DEBUG: ARTIST URI LIST IN DB ACCESS:")
+    print(artist_uri_list)
 
     conn.commit()
     cur.close()

@@ -159,6 +159,9 @@ def get_new_tracks_from_artists(sp, artist_uri_list, days=7):
     Returns:
         DataFrame: A pandas DataFrame containing track names, URIs, release dates and artist names.
     """
+    print("DEBUG: ARTIST URI LIST IN API FUNCTION:")
+    print(artist_uri_list)
+
     # Run function to get all songs
     track_df = get_all_tracks_from_artists(sp, artist_uri_list)
 
@@ -167,6 +170,9 @@ def get_new_tracks_from_artists(sp, artist_uri_list, days=7):
     track_df = track_df[track_df["days_since_release"] <= days]
 
     print("Log: Finished pulling new tracks from artist.")
+
+    print("DEBUG: TRACK DF:")
+    print(track_df)
     return track_df
 
 

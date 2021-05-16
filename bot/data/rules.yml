@@ -15,12 +15,6 @@ rules:
   - intent: bot_challenge
   - action: utter_iamabot
 
-- rule: Say the action takes a while whenever user request new tracks
-  steps:
-  - intent: request_new_tracks
-  - action: utter_takesawhile
-  - action: custom_action_get_new_tracks
-
 
 ## REGISTRATION + AUTHENTICATION ##
 
@@ -78,3 +72,12 @@ rules:
     - found_artist_uri: null
   - action: utter_canceled_action
   - action: custom_action_reset_artist_slots
+
+
+  ## PULL TRACK DATA ##
+
+- rule: User requests new songs from subscribed artists
+  steps:
+  - intent: request_new_tracks
+  - action: utter_takesawhile
+  - action: custom_action_get_new_subscribed_songs

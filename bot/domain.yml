@@ -48,10 +48,10 @@ responses:
 
 actions:
 - custom_action_add_new_user
-- custom_action_get_new_tracks
 - custom_action_search_artist
 - custom_action_subscribe_to_artist
 - custom_action_reset_artist_slots
+- custom_action_get_new_subscribed_songs
 
 slots:
   user_uri:
