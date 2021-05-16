@@ -49,6 +49,7 @@ actions:
 - custom_action_get_new_tracks
 - custom_action_search_artist
 - custom_action_subscribe_to_artist
+- custom_action_reset_artist_slots
 
 slots:
   user_uri:
@@ -67,7 +68,6 @@ slots:
   subscribed_artists:
     type: list
 
-
 forms:
   new_user_form:
     required_slots:
@@ -85,8 +85,6 @@ forms:
         - type: from_intent
           value: true
           intent: affirm
-          not_intent: deny
         - type: from_intent
           value: false
           intent: deny
-          not_intent: affirm

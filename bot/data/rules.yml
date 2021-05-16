@@ -27,8 +27,11 @@ rules:
 - rule: Activate artists subscription form right artist
   steps:
   - intent: subscribe_to_artist
+  - action: custom_action_reset_artist_slots
   - action: artist_subscription_form
   - action: custom_action_search_artist
+  - slot_was_set:
+    - found_artist_uri: "some_artist_uri"
   - action: confirm_artist_form
   - slot_was_set:
     - artist_correct: true
@@ -37,25 +40,25 @@ rules:
 - rule: Activate artists subscription form wrong artist
   steps:
   - intent: subscribe_to_artist
+  - action: custom_action_reset_artist_slots
   - action: artist_subscription_form
   - action: custom_action_search_artist
+  - slot_was_set:
+    - found_artist_uri: "some_artist_uri"
   - action: confirm_artist_form
   - slot_was_set:
-    - artist_correct: null
+    - artist_correct: false
   - action: utter_canceled_action
+  - action: custom_action_reset_artist_slots
 
 
-# rules:
-# - rule: Submit form
-#   condition:
-#   # Condition that form is active.
-#   - active_loop: restaurant_form
-#   steps:
-#   # Form is deactivated
-#   - action: restaurant_form
-#   - active_loop: null
-#   - slot_was_set:
-#     - requested_slot: null
-#   # The actions we want to run when the form is submitted.
-#   - action: utter_submit
-#   - action: utter_slots_values
+- rule: Activate artists subscription form no artist found
+  steps:
+  - intent: subscribe_to_artist
+  - action: custom_action_reset_artist_slots
+  - action: artist_subscription_form
+  - action: custom_action_search_artist
+  - slot_was_set:
+    - found_artist_uri: null
+  - action: utter_canceled_action
+  - action: custom_action_reset_artist_slots

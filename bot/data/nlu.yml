@@ -112,11 +112,15 @@ nlu:
     - Add new artist to my list
     - I want to follow an artist
     - add artist to my subscription list
+    - please subscribe to artist
+    - please follow artist
 
 - intent: request_new_tracks
   examples: |
     - do my artist have new tracks?
     - what are new tracks?
     - new tracks of interest?
-    - any new tracks?
-    - any new songs?
+    - are there any new tracks?
+    - are there any new songs?
+    - any news?
+    - tell me the newest tracks

@@ -20,7 +20,7 @@ def search_artist_by_name(sp, artist_name_input):
         result_artist_uri = results["artists"]["items"][0]["uri"]
     except Exception as e:
         print("Log: No results were found.")
-        return
+        return "", ""
 
     return result_artist_name, result_artist_uri
 

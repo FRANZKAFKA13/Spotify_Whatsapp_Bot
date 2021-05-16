@@ -97,7 +97,11 @@ class SearchArtist(Action):
         artist_input_name = tracker.get_slot("new_artist_subscription_name")
         search_result_artist_name, search_result_artist_uri = search_artist_by_name(sp, artist_input_name)
 
-        dispatcher.utter_message(text="I found the following artist: " + str(search_result_artist_name) + " (" + str(search_result_artist_uri) + ")")
+        if search_result_artist_uri != "":
+            dispatcher.utter_message(text="I found the following artist: " + str(search_result_artist_name) + " (" + str(search_result_artist_uri) + ")")
+        else:
+            dispatcher.utter_message(text="I could not find any artist.")
+            return
 
         return[SlotSet("found_artist_name", search_result_artist_name), SlotSet('found_artist_uri', search_result_artist_uri)]
 
@@ -126,3 +130,18 @@ class SubscribeToArtist(Action):
             print(e)
 
         return []
+
+
+class ResetArtistSlots(Action):
+
+    def name(self) -> Text:
+        return "custom_action_reset_artist_slots"
+
+    async def run(self, dispatcher: CollectingDispatcher,
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        print("Log: Reset all artist related slots.")
+
+        return[SlotSet("found_artist_name", None), SlotSet("found_artist_uri", None), SlotSet("new_artist_subscription_name", None), SlotSet("artist_correct", None)]
+
