@@ -1,5 +1,9 @@
-Notes of next features to be implemented:
+Planned Features:
 - Allow user to specify how many days they want to look back when requesting new songs
+- Apply best practices for setting db_path
+- Improve performance by storing artist/song data in local DB instead of pulling from API every time (use DBT?)
+
+
 
 Ongoing:
 - Show new songs from subscribed artists
