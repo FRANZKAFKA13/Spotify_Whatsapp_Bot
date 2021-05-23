@@ -33,6 +33,9 @@
 - The bot uses a [SQLite](https://docs.python.org/3/library/sqlite3.html) database
 - Change database schema:
     - The database is created through the function create_initial_db in [database_access.py](bot/actions/functions/database_access.py) where the schema is defined
+
+- Accessing [Google BigQuery Tutorial](https://cloud.google.com/bigquery/docs/reference/libraries#client-libraries-install-python)
+
 ## Built With
 
 - [Python](https://www.python.org/) - Main programming language used
