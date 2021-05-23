@@ -37,10 +37,22 @@ def create_initial_db(db_file):
                                               ); """
 
     sql_create_subscribed_artists_table = """ CREATE TABLE "subscribed_artists" (
-	                                          "user_uri"	INTEGER NOT NULL,
+	                                          "user_uri"	TEXT NOT NULL,
 	                                          "artist_uri"	TEXT NOT NULL,
                                               FOREIGN KEY(user_uri) REFERENCES users(user_uri),
                                               UNIQUE(user_uri, artist_uri)
+                                              ); """
+
+    sql_create_subscribed_artists_table = """ CREATE TABLE "tracks" (
+	                                          "track_uri"	        TEXT NOT NULL,
+	                                          "track_name"	        TEXT NOT NULL,
+                                              "track_release_date"	DATE NOT NULL,
+                                              "artist_uri"	        TEXT NOT NULL,
+                                              "artist_name"	        TEXT NOT NULL,
+                                              "album_uri"	        TEXT NOT NULL,
+                                              "album_name"	        TEXT NOT NULL,
+                                              "album_release_date"	DATE NOT NULL,
+                                              UNIQUE(track_uri)
                                               ); """
 
     try:
@@ -126,21 +138,46 @@ def get_subscribed_artists(db_file, user_uri):
     except Exception as e:
         print("test")
         print("Failed pulling user subscriptions: " + str(e))
-    
-    print("DEBUG: ARTIST URI QUERY RESULT:")
-    print(artist_uri_query_result)
 
     artist_uri_list = []
     for artist_uri in artist_uri_query_result:
         artist_uri_list.append(artist_uri[0])
 
-    print("DEBUG: ARTIST URI LIST IN DB ACCESS:")
-    print(artist_uri_list)
-
     conn.commit()
     cur.close()
 
     return artist_uri_list
+
+
+def write_tracks(db_file, track_df):
+    """ A function writing tracks from artists into the DB.
+    Args:
+        db_file (sqlite db): The database path.
+        track_df (pandas dataframe): A dataframe holding the new tracks to be written into the db.
+    Returns:
+        None
+    """
+
+    conn = create_db_connection(db_file)
+    cur = conn.cursor()
+
+    # Add new subscription to user table
+    new_tracks = (track_uri, track_name, track_release_date, artist_uri, artist_name, album_uri, album_name, album_release_date)
+    sql_add_new_user = """ INSERT INTO subscribed_artists(user_uri, artist_uri)
+                           VALUES(?,?,?,?,?) """
+
+    try:
+        df.to_sql('tracks', conn, if_exists='append', index = False)
+    except Exception as e:
+        print("Failed adding new tracks: " + str(e))
+    
+
+    conn.commit()
+    cur.close()
+
+
+    return None
+
 
 
 

@@ -93,6 +93,10 @@ def get_tracks_from_albums(sp, album_uri_list):
         DataFrame: A pandas DataFrame containing track names, URIs and release dates.
     """
 
+    #album_uri_list = albums_df["album_uri"].to_list()
+
+    #track_list = [["track_uri", "track_name", "track_release_date", "artist_uri", "artist_name", "album_uri", "album_name", "album_release_date"]]
+
     track_list = [["track_name", "track_uri", "track_release_date"]]
 
     print("Log: Pulling data from Spotify. This can take a while...")
@@ -101,50 +105,18 @@ def get_tracks_from_albums(sp, album_uri_list):
         album_tracks = sp.album_tracks(album_uri, limit=50, offset=0)["items"]
         count_tracks_in_album = len(album_tracks)
         album_release_date = sp.album(album_uri)["release_date"]
+        print(sp.album(album_uri)["artists"][0]["name"])
 
         # This part is probably very slow and should be improved by accessing the API less often
         for track_number in range(count_tracks_in_album):
             track_name = album_tracks[track_number]["name"]
             track_uri = album_tracks[track_number]["uri"]
-             
-            track_list.append([track_name, track_uri, album_release_date])
+            track_list.append([track_uri, track_name, album_release_date, ])
 
     # Create df from list of tracks for all albums
     track_df = pd.DataFrame(data=track_list[1:], columns=track_list[0])
     
     print("Log: Finished pulling all tracks from albums.")
-    return track_df
-
-
-def get_all_tracks_from_artists(sp, artist_uri_list):
-    """A function returning tracks from a list of artist URIs as pandas DataFrame.
-
-    Args:
-        sp (Object): Spotipy object that can be used to make API calls
-        artist_uri_list (list): A list containing artist URIs.
-
-    Returns:
-        DataFrame: A pandas DataFrame containing track names, URIs, release dates and artist names.
-    """
-
-    track_list = [["track_name", "track_uri", "track_release_date", "artist_name"]]
-    track_df = pd.DataFrame(columns=track_list[0])
-
-    print("Log: Pulling data from Spotify. This can take a while...")
-
-    for artist_uri in artist_uri_list:
-        # Get artist name and albums
-        artist_name = sp.artist(artist_uri)["name"]
-        albums = get_albums_from_artists(sp, [artist_uri])
-
-        # Get tracks from artist albums
-        tracks_artist_df = get_tracks_from_albums(sp, albums["album_uri"].to_list())
-        tracks_artist_df["artist_name"] = artist_name
-
-        # Append new songs to dataframe
-        track_df = track_df.append(tracks_artist_df)
-    
-    print("Log: Finished pulling all tracks from artist.")
     return track_df
 
 
@@ -159,8 +131,6 @@ def get_new_tracks_from_artists(sp, artist_uri_list, days=7):
     Returns:
         DataFrame: A pandas DataFrame containing track names, URIs, release dates and artist names.
     """
-    print("DEBUG: ARTIST URI LIST IN API FUNCTION:")
-    print(artist_uri_list)
 
     # Run function to get all songs
     track_df = get_all_tracks_from_artists(sp, artist_uri_list)
@@ -171,8 +141,6 @@ def get_new_tracks_from_artists(sp, artist_uri_list, days=7):
 
     print("Log: Finished pulling new tracks from artist.")
 
-    print("DEBUG: TRACK DF:")
-    print(track_df)
     return track_df
 
 
@@ -201,5 +169,54 @@ def datediff_today(date):
     today = datetime.date.today()
     datediff = (today - date).days
     return datediff
+
+from api_connection import *
+
+#get_tracks_from_albums(connect_to_api(), ["spotify:album:6m8yu8ytRnnxy395MbA80U"])
+
+
+def get_all_tracks_from_artists(sp, artist_uri_list):
+    """A function returning tracks from a list of artist URIs as pandas DataFrame.
+
+    Args:
+        sp (Object): Spotipy object that can be used to make API calls
+        artist_uri_list (list): A list containing artist URIs.
+
+    Returns:
+        DataFrame: A pandas DataFrame containing track names, URIs, release dates and artist names.
+    """
+
+    track_list = [["track_uri", "track_name", "track_release_date", "artist_uri", "artist_name", "side_artist_uris", "side_artist_names", "album_uri", "album_name", "album_release_date"]]
+
+    for artist in artist_uri_list:
+
+        albums = sp.artist_albums(artist)
+
+        for album in albums["items"]:
+            album_uri = album["uri"]
+            album_name = album["name"]
+            album_release_date = album["release_date"]
+            artist_uri = album["artists"][0]["uri"]
+            artist_name = album["artists"][0]["name"]
+            other_artist_uris = []
+            other_artist_names = []
+
+            for artist in album["artists"][1:]:
+                other_artist_uris.append(artist["uri"])
+                other_artist_names.append(artist["name"])
+
+            tracks = sp.album_tracks(album["uri"], limit=50, offset=0)["items"]
+
+            for track in tracks:
+                track_name = track["name"]
+                track_uri = track["uri"]
+                track_release_date = album["release_date"]
+                track_list.append([track_uri, track_name, track_release_date, artist_uri, artist_name, other_artist_uris, other_artist_names, album_uri, album_name, album_release_date])
+
+    # Create df from list of tracks
+    tracks_df = pd.DataFrame(data=track_list[1:], columns=track_list[0])    
+    print(tracks_df)
+    return tracks_df
+        
 
 
