@@ -43,17 +43,17 @@ def create_initial_db(db_file):
                                               UNIQUE(user_uri, artist_uri)
                                               ); """
 
-    sql_create_subscribed_artists_table = """ CREATE TABLE "tracks" (
-	                                          "track_uri"	        TEXT NOT NULL,
-	                                          "track_name"	        TEXT NOT NULL,
-                                              "track_release_date"	DATE NOT NULL,
-                                              "artist_uri"	        TEXT NOT NULL,
-                                              "artist_name"	        TEXT NOT NULL,
-                                              "album_uri"	        TEXT NOT NULL,
-                                              "album_name"	        TEXT NOT NULL,
-                                              "album_release_date"	DATE NOT NULL,
-                                              UNIQUE(track_uri)
-                                              ); """
+    sql_create_tracks_table = """ CREATE TABLE "tracks" (
+                                  "track_uri"	        TEXT NOT NULL,
+                                  "track_name"	        TEXT NOT NULL,
+                                  "track_release_date"	TEXT NOT NULL,
+                                  "artist_uri"	        TEXT NOT NULL,
+                                  "artist_name"	        TEXT NOT NULL,
+                                  "album_uri"	        TEXT NOT NULL,
+                                  "album_name"	        TEXT NOT NULL,
+                                  "album_release_date"	TEXT NOT NULL,
+                                  UNIQUE(track_uri)
+                                  ); """
 
     try:
         cur.execute(sql_create_users_table)
@@ -62,6 +62,11 @@ def create_initial_db(db_file):
 
     try:
         cur.execute(sql_create_subscribed_artists_table)
+    except Exception as e:
+        print("Failed creating new table: " + str(e))
+
+    try:
+        cur.execute(sql_create_tracks_table)
     except Exception as e:
         print("Failed creating new table: " + str(e))
 
@@ -161,27 +166,48 @@ def write_tracks(db_file, track_df):
     conn = create_db_connection(db_file)
     cur = conn.cursor()
 
-    # Add new subscription to user table
-    new_tracks = (track_uri, track_name, track_release_date, artist_uri, artist_name, album_uri, album_name, album_release_date)
-    sql_add_new_user = """ INSERT INTO subscribed_artists(user_uri, artist_uri)
-                           VALUES(?,?,?,?,?) """
+    
+    # for track in track_df["track_uri"]:
+
+    #     track_uri = track_df["track_uri"]
+    #     track_name = track_df["track_name"]
+    #     track_release_date = track_df["track_release_date"]
+    #     artist_uri = track_df["artist_uri"]
+    #     artist_name = track_df["artist_name"]
+    #     other_artist_uris = track_df["other_artist_uris"]
+    #     other_artist_names = track_df["other_artist_names"]
+    #     album_uri = track_df["album_uri"]
+    #     album_name = track_df["album_name"]
+    #     album_release_date = track_df["album_release_date"]
+
+    #     # Add new subscription to user table
+    #     new_track = (track_uri, track_name, track_release_date, artist_uri, artist_name, other_artist_uris, other_artist_names, album_uri, album_name, album_release_date)
+    #     sql_add_new_user = """ INSERT INTO tracks(track_uri, track_name, track_release_date, artist_uri, artist_name, other_artist_uris, other_artist_names, album_uri, album_name, album_release_date)
+    #                         VALUES(?,?,?,?,?,?,?,?,?,?) """
 
     try:
-        df.to_sql('tracks', conn, if_exists='append', index = False)
+        track_df.to_sql('tracks', conn, if_exists='append', index = False)
     except Exception as e:
-        print("Failed adding new tracks: " + str(e))
+        print("Failed adding new track: " + str(e))
     
 
     conn.commit()
     cur.close()
 
-
     return None
 
 
+from api_functions import *
+from api_connection import *
+
+create_initial_db("../../data/test.db")
+track_df = get_all_tracks_from_artists(connect_to_api(), ["spotify:artist:18ISxWwWjV6rPLoVCXf1dz"])
+print(track_df.dtypes)
 
 
-#create_initial_db("../../data/test.db")
+write_tracks("../../data/test.db", track_df)
+
+
 #add_user("../../data/test.db", "test_uri", "Even more user")
 # add_subscription("../../data/test.db", "test_uri", "artist_4")
 # print(get_subscribed_artists("../../data/test.db", "test_uri"))

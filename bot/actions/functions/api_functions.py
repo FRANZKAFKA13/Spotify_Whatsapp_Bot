@@ -170,10 +170,6 @@ def datediff_today(date):
     datediff = (today - date).days
     return datediff
 
-from api_connection import *
-
-#get_tracks_from_albums(connect_to_api(), ["spotify:album:6m8yu8ytRnnxy395MbA80U"])
-
 
 def get_all_tracks_from_artists(sp, artist_uri_list):
     """A function returning tracks from a list of artist URIs as pandas DataFrame.
@@ -186,7 +182,7 @@ def get_all_tracks_from_artists(sp, artist_uri_list):
         DataFrame: A pandas DataFrame containing track names, URIs, release dates and artist names.
     """
 
-    track_list = [["track_uri", "track_name", "track_release_date", "artist_uri", "artist_name", "side_artist_uris", "side_artist_names", "album_uri", "album_name", "album_release_date"]]
+    track_list = [["track_uri", "track_name", "track_release_date", "artist_uri", "artist_name", "album_uri", "album_name", "album_release_date"]]
 
     for artist in artist_uri_list:
 
@@ -198,12 +194,12 @@ def get_all_tracks_from_artists(sp, artist_uri_list):
             album_release_date = album["release_date"]
             artist_uri = album["artists"][0]["uri"]
             artist_name = album["artists"][0]["name"]
-            other_artist_uris = []
-            other_artist_names = []
+            #other_artist_uris = []
+            #other_artist_names = []
 
-            for artist in album["artists"][1:]:
-                other_artist_uris.append(artist["uri"])
-                other_artist_names.append(artist["name"])
+            #for artist in album["artists"][1:]:
+            #    other_artist_uris.append(artist["uri"])
+            #    other_artist_names.append(artist["name"])
 
             tracks = sp.album_tracks(album["uri"], limit=50, offset=0)["items"]
 
@@ -211,12 +207,10 @@ def get_all_tracks_from_artists(sp, artist_uri_list):
                 track_name = track["name"]
                 track_uri = track["uri"]
                 track_release_date = album["release_date"]
-                track_list.append([track_uri, track_name, track_release_date, artist_uri, artist_name, other_artist_uris, other_artist_names, album_uri, album_name, album_release_date])
+                track_list.append([track_uri, track_name, track_release_date, artist_uri, artist_name, album_uri, album_name, album_release_date])
 
     # Create df from list of tracks
     tracks_df = pd.DataFrame(data=track_list[1:], columns=track_list[0])    
     print(tracks_df)
     return tracks_df
         
-
-

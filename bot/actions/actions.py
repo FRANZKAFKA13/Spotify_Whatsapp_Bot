@@ -12,6 +12,8 @@
 #     sys.path.insert(0, 'cmd_subfolder')
 
 # Import rasa funcations
+from bot.actions.functions.database_access import get_subscribed_artists
+from bot.actions.functions.api_functions import get_all_tracks_from_artists, get_new_tracks_from_artists
 from typing import Text, Dict, Any, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.events import SlotSet
@@ -101,7 +103,6 @@ class SubscribeToArtist(Action):
         try:
             add_subscription(db_path, user_uri, search_result_artist_uri)
             dispatcher.utter_message(text="Subscribed to new artist: " + str(search_result_artist_name))
-            dispatcher.utter_message(text="Artist URI: " + str(search_result_artist_uri))
         except Exception as e:
             print(e)
 
@@ -152,3 +153,20 @@ class GetNewSubscribedSongs(Action):
         dispatcher.utter_message(text=new_songs_output)
 
         return []
+
+
+class WriteTracksToDatabase(Action):
+
+    def name(self) -> Text:
+        return "custom_action_write_tracks_to_database"
+
+    async def run(self, dispatcher: CollectingDispatcher,
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        user_uri = tracker.get_slot("user_uri")
+        db_path = "data/test.db"
+        sp = connect_to_api()
+        
+        artist_uri_list = get_subscribed_artists(db_path, user_uri)
+        tracklist = get_all_tracks_from_artists(sp, artist_uri_list)
