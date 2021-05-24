@@ -166,25 +166,6 @@ def write_tracks(db_file, track_df):
     conn = create_db_connection(db_file)
     cur = conn.cursor()
 
-    
-    # for track in track_df["track_uri"]:
-
-    #     track_uri = track_df["track_uri"]
-    #     track_name = track_df["track_name"]
-    #     track_release_date = track_df["track_release_date"]
-    #     artist_uri = track_df["artist_uri"]
-    #     artist_name = track_df["artist_name"]
-    #     other_artist_uris = track_df["other_artist_uris"]
-    #     other_artist_names = track_df["other_artist_names"]
-    #     album_uri = track_df["album_uri"]
-    #     album_name = track_df["album_name"]
-    #     album_release_date = track_df["album_release_date"]
-
-    #     # Add new subscription to user table
-    #     new_track = (track_uri, track_name, track_release_date, artist_uri, artist_name, other_artist_uris, other_artist_names, album_uri, album_name, album_release_date)
-    #     sql_add_new_user = """ INSERT INTO tracks(track_uri, track_name, track_release_date, artist_uri, artist_name, other_artist_uris, other_artist_names, album_uri, album_name, album_release_date)
-    #                         VALUES(?,?,?,?,?,?,?,?,?,?) """
-
     try:
         track_df.to_sql('tracks', conn, if_exists='append', index = False)
     except Exception as e:
@@ -197,15 +178,13 @@ def write_tracks(db_file, track_df):
     return None
 
 
-from api_functions import *
-from api_connection import *
-
-create_initial_db("../../data/test.db")
-track_df = get_all_tracks_from_artists(connect_to_api(), ["spotify:artist:18ISxWwWjV6rPLoVCXf1dz"])
-print(track_df.dtypes)
-
-
-write_tracks("../../data/test.db", track_df)
+#from api_functions import *
+#from api_connection import *
+#
+#create_initial_db("../../data/test.db")
+#track_df = get_all_tracks_from_artists(connect_to_api(), ["spotify:artist:18ISxWwWjV6rPLoVCXf1dz"])
+#print(track_df.dtypes)
+#write_tracks("../../data/test.db", track_df)
 
 
 #add_user("../../data/test.db", "test_uri", "Even more user")

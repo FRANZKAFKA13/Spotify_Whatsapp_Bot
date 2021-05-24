@@ -182,6 +182,9 @@ def get_all_tracks_from_artists(sp, artist_uri_list):
         DataFrame: A pandas DataFrame containing track names, URIs, release dates and artist names.
     """
 
+    
+
+
     track_list = [["track_uri", "track_name", "track_release_date", "artist_uri", "artist_name", "album_uri", "album_name", "album_release_date"]]
 
     for artist in artist_uri_list:
@@ -212,5 +215,8 @@ def get_all_tracks_from_artists(sp, artist_uri_list):
     # Create df from list of tracks
     tracks_df = pd.DataFrame(data=track_list[1:], columns=track_list[0])    
     print(tracks_df)
+
+    # Write Tracks to DB
+
     return tracks_df
         
